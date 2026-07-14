@@ -4,6 +4,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
   selector: 'app-month-selector',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './month-selector.html',
+  host: { class: 'block' },
 })
 export class MonthSelector {
   readonly label = input.required<string>();

@@ -9,6 +9,7 @@ import { EXPENSE_CATEGORIES, ExpenseCategory, NewExpense } from '../../models/ex
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule],
   templateUrl: './expense-form.html',
+  host: { class: 'block' },
 })
 export class ExpenseForm {
   readonly add = output<NewExpense>();

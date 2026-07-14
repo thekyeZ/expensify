@@ -8,6 +8,7 @@ import { CATEGORY_ICONS, Expense, ExpenseCategory } from '../../models/expense.m
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CurrencyPipe, DatePipe],
   templateUrl: './expense-list.html',
+  host: { class: 'block' },
 })
 export class ExpenseList {
   readonly expenses = input.required<Expense[]>();
