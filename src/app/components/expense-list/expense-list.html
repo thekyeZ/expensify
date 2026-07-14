@@ -1,0 +1,37 @@
+<ul class="divide-y divide-slate-100">
+  @for (expense of expenses(); track expense.id) {
+    <li class="group flex items-center gap-3 py-3">
+      <span
+        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-violet-50 text-lg"
+        aria-hidden="true"
+      >
+        {{ icon(expense.category) }}
+      </span>
+
+      <div class="min-w-0 flex-1">
+        <p class="truncate text-sm font-medium text-slate-900">{{ expense.title }}</p>
+        <p class="text-xs text-slate-500">
+          {{ expense.date | date: 'd MMMM' }} · {{ expense.category }}
+        </p>
+      </div>
+
+      <span class="text-sm font-semibold text-slate-900">-{{ expense.amount | currency }}</span>
+
+      <button
+        type="button"
+        (click)="remove.emit(expense.id)"
+        [attr.aria-label]="'Usuń wydatek: ' + expense.title"
+        class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-300 transition hover:bg-red-50 hover:text-red-500 sm:opacity-0 sm:group-hover:opacity-100"
+      >
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </li>
+  } @empty {
+    <li class="py-10 text-center">
+      <p class="text-sm font-medium text-slate-600">Brak wydatków w tym miesiącu</p>
+      <p class="mt-1 text-xs text-slate-400">Dodaj pierwszy wydatek za pomocą formularza.</p>
+    </li>
+  }
+</ul>

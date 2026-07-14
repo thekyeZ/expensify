@@ -1,0 +1,86 @@
+<section class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-100 sm:p-6">
+  <h2 class="text-base font-semibold text-slate-900">Dodaj wydatek</h2>
+  <p class="mt-0.5 text-sm text-slate-500">Szybko zapisz nową transakcję.</p>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="mt-4 space-y-3">
+    <div>
+      <label for="expense-title" class="mb-1 block text-xs font-medium text-slate-600">
+        Nazwa wydatku
+      </label>
+      <input
+        id="expense-title"
+        type="text"
+        formControlName="title"
+        placeholder="np. Zakupy spożywcze"
+        class="w-full rounded-xl border bg-white px-3.5 py-2.5 text-sm outline-none transition focus:ring-2"
+        [class]="
+          isInvalid('title')
+            ? 'border-red-300 focus:border-red-500 focus:ring-red-100'
+            : 'border-slate-200 focus:border-violet-500 focus:ring-violet-200'
+        "
+      />
+      @if (isInvalid('title')) {
+        <p class="mt-1 text-xs text-red-500">Podaj nazwę wydatku.</p>
+      }
+    </div>
+
+    <div class="grid grid-cols-2 gap-3">
+      <div>
+        <label for="expense-amount" class="mb-1 block text-xs font-medium text-slate-600">
+          Kwota (PLN)
+        </label>
+        <input
+          id="expense-amount"
+          type="number"
+          formControlName="amount"
+          min="0"
+          step="0.01"
+          placeholder="0,00"
+          class="w-full rounded-xl border bg-white px-3.5 py-2.5 text-sm outline-none transition focus:ring-2"
+          [class]="
+            isInvalid('amount')
+              ? 'border-red-300 focus:border-red-500 focus:ring-red-100'
+              : 'border-slate-200 focus:border-violet-500 focus:ring-violet-200'
+          "
+        />
+        @if (isInvalid('amount')) {
+          <p class="mt-1 text-xs text-red-500">Podaj kwotę większą od zera.</p>
+        }
+      </div>
+
+      <div>
+        <label for="expense-date" class="mb-1 block text-xs font-medium text-slate-600">
+          Data
+        </label>
+        <input
+          id="expense-date"
+          type="date"
+          formControlName="date"
+          class="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-200"
+        />
+      </div>
+    </div>
+
+    <div>
+      <label for="expense-category" class="mb-1 block text-xs font-medium text-slate-600">
+        Kategoria
+      </label>
+      <select
+        id="expense-category"
+        formControlName="category"
+        class="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-200"
+      >
+        @for (category of categories; track category) {
+          <option [value]="category">{{ category }}</option>
+        }
+      </select>
+    </div>
+
+    <button
+      type="submit"
+      class="w-full rounded-xl bg-violet-600 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-violet-700 active:scale-[0.99]"
+    >
+      Dodaj wydatek
+    </button>
+  </form>
+</section>

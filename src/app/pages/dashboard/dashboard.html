@@ -1,0 +1,76 @@
+<div class="min-h-screen pb-24 lg:pb-10">
+  <header class="border-b border-slate-100 bg-white">
+    <div class="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
+      <div class="flex items-center gap-2.5">
+        <div
+          class="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-600 text-base font-bold text-white shadow-sm"
+        >
+          E
+        </div>
+        <h1 class="text-xl font-bold tracking-tight text-slate-900">Expensify</h1>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-5xl space-y-5 px-4 py-5 sm:py-6">
+    @if (store.errorMessage(); as error) {
+      <div class="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700 ring-1 ring-red-100">
+        {{ error }}
+      </div>
+    }
+
+    <app-budget-summary
+      [monthLabel]="store.monthLabel()"
+      [budgetAmount]="store.budgetAmount()"
+      [totalSpent]="store.totalSpent()"
+      [usagePercent]="store.usagePercent()"
+      [barClass]="store.progressBarClass()"
+      [loading]="store.loading()"
+      (budgetChange)="store.setBudget($event)"
+    />
+
+    <div class="grid gap-5 lg:grid-cols-5">
+      <div class="lg:col-span-2">
+        <app-expense-form (add)="store.addExpense($event)" />
+      </div>
+
+      <section class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-100 sm:p-6 lg:col-span-3">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <h2 class="text-base font-semibold text-slate-900">Ostatnie transakcje</h2>
+          <app-month-selector
+            [label]="store.monthLabel()"
+            (previous)="store.previousMonth()"
+            (next)="store.nextMonth()"
+          />
+        </div>
+
+        <div class="mt-2">
+          @defer (on viewport) {
+            @if (store.loading()) {
+              <div class="animate-pulse space-y-3 py-3" aria-label="Ładowanie transakcji">
+                @for (row of [1, 2, 3, 4]; track row) {
+                  <div class="flex items-center gap-3">
+                    <div class="h-10 w-10 rounded-full bg-slate-100"></div>
+                    <div class="flex-1 space-y-2">
+                      <div class="h-3 w-1/2 rounded bg-slate-100"></div>
+                      <div class="h-2.5 w-1/3 rounded bg-slate-100"></div>
+                    </div>
+                    <div class="h-3 w-14 rounded bg-slate-100"></div>
+                  </div>
+                }
+              </div>
+            } @else {
+              <app-expense-list [expenses]="store.expenses()" (remove)="store.removeExpense($event)" />
+            }
+          } @placeholder {
+            <div class="py-10 text-center text-sm text-slate-400">Ładowanie…</div>
+          }
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="lg:hidden">
+    <app-bottom-nav />
+  </div>
+</div>

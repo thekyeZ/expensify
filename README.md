@@ -1,59 +1,37 @@
 # Expensify
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.9.
+Nowoczesna, minimalistyczna aplikacja do śledzenia osobistych wydatków i kontrolowania miesięcznego budżetu. Zbudowana w oparciu o Angular 20 (Standalone Components + Signals), Tailwind CSS 4 i Supabase.
 
-## Development server
+## Funkcjonalności
 
-To start a local development server, run:
+- **Dodawanie wydatków** — nazwa, kwota (PLN), data, kategoria.
+- **Lista transakcji** — historia wydatków z nawigacją pomiędzy miesiącami (`<` / `>`).
+- **Miesięczny budżet** — ustawiany per miesiąc, z paskiem postępu:
+  - fioletowy poniżej 75% wykorzystania,
+  - pomarańczowy od 75%,
+  - czerwony od 90%.
+- **Mobile first** — dolny pasek nawigacji i skondensowany układ na małych ekranach.
 
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Uruchomienie
 
 ```bash
-ng generate component component-name
+npm install
+npm start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Aplikacja wystartuje pod adresem `http://localhost:4200`.
 
-```bash
-ng generate --help
-```
+## Konfiguracja Supabase
 
-## Building
+1. Utwórz projekt na [supabase.com](https://supabase.com) i wykonaj skrypt `supabase/schema.sql` w SQL Editorze.
+2. Uzupełnij `src/environments/environment.ts` wartościami `supabaseUrl` i `supabaseAnonKey` (Project Settings → API).
 
-To build the project run:
+Dopóki dane Supabase nie są uzupełnione, aplikacja działa w **trybie demo** na przykładowych danych trzymanych w pamięci przeglądarki (zmiany znikają po odświeżeniu).
 
-```bash
-ng build
-```
+## Architektura
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- `src/app/core` — czysta logika biznesowa niezależna od Angulara (operacje na miesiącach, kalkulacja budżetu, klient Supabase, dane demo).
+- `src/app/models` — interfejsy encji (`Expense`, `MonthlyBudget`) i mapowanie wierszy z bazy.
+- `src/app/services` — `ExpenseService`, `BudgetService` (komunikacja z Supabase) oraz `DashboardStore` (stan na sygnałach: `currentMonth`, `expenses`, `budget` + `computed` dla kalkulacji budżetu).
+- `src/app/components` — komponenty prezentacyjne (dumb): podsumowanie budżetu, formularz, lista, selektor miesiąca, dolna nawigacja.
+- `src/app/pages/dashboard` — komponent smart spinający całość.
