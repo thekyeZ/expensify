@@ -44,7 +44,7 @@ export class BudgetService {
 
     const { data, error } = await client
       .from('budgets')
-      .upsert({ month_year: key, amount }, { onConflict: 'month_year' })
+      .upsert({ month_year: key, amount }, { onConflict: 'user_id,month_year' })
       .select()
       .single();
 
